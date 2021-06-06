@@ -1,6 +1,6 @@
 <template>
   <div class="nav">
-    <a href="https://igloo.energy/" target="_blank" title="Igloo Energy">
+    <a href="https://igloo.energy/" target="_blank" title="Igloo Energy" class="nav__logo">
       <Logo />
     </a>
   </div>
@@ -23,5 +23,9 @@ export default {
   display: flex;
   align-items: center;
   background: #ff0099;
+}
+
+.nav__logo {
+  display: flex;
 }
 </style>

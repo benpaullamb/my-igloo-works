@@ -1,6 +1,11 @@
 <template>
   <div class="dropdown">
-    <StatesOption @click="open = !open" :color="value.color" :text="value.text" :lightText="value.lightText" />
+    <StatesOption
+      @click="open = !open"
+      :color="selectedState.color"
+      :text="selectedState.text"
+      :lightText="selectedState.lightText"
+    />
     <div v-if="open" class="dropdown__options">
       <StatesOption
         v-for="state in options"
@@ -23,7 +28,7 @@ export default {
   },
   props: {
     value: {
-      type: Object,
+      type: String,
       required: true,
     },
   },
@@ -67,13 +72,28 @@ export default {
   },
   computed: {
     options() {
-      return this.states.filter((state) => state.code !== this.value.code);
+      return this.states.filter((state) => state.code !== this.value);
+    },
+    selectedState() {
+      return this.states.find((state) => state.code === this.value);
     },
   },
+  created() {
+    window.addEventListener('mousedown', this.onClick);
+  },
+  destroyed() {
+    window.removeEventListener('mousedown', this.onClick);
+  },
   methods: {
-    select(state) {
+    select({ code }) {
       this.open = false;
-      this.$emit('input', state);
+      this.$emit('input', code);
+    },
+    onClick({ path }) {
+      const isOnDropdown = path.some((el) => el.classList?.contains('dropdown'));
+      if (!isOnDropdown && this.open) {
+        this.open = false;
+      }
     },
   },
 };

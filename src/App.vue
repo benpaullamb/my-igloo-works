@@ -9,10 +9,9 @@
         </div>
         <div v-for="(todoGroup, i) in todosGroupedByDate" :key="`todo-group-${i}`" class="todo-group">
           <span class="date">{{ todoGroup.date | formattedDate }}</span>
-          <TODO
+          <Todo
             v-for="(todo, j) in todoGroup.todos"
             :key="`todo-${i}-${j}`"
-            class="todo"
             v-model="todoGroup.todos[j]"
             @deleted="deleteTodo(todo.date)"
           />
@@ -25,13 +24,13 @@
 <script>
 import { DateTime } from 'luxon';
 import Navbar from './components/Navbar.vue';
-import TODO from './components/TODO.vue';
+import Todo from './components/Todo.vue';
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    TODO,
+    Todo,
   },
   data() {
     return {
@@ -90,12 +89,9 @@ export default {
     createTodo() {
       this.todos.push({
         text: '',
-        state: {
-          text: 'TODO',
-          code: 'todo',
-          color: '#e0e0e0',
-        },
+        state: 'todo',
         blocked: false,
+        subtasks: [],
         date: DateTime.now().toISO(),
       });
     },
@@ -170,9 +166,5 @@ export default {
   margin-bottom: 16px;
   display: block;
   font-size: 16px;
-}
-
-.todo {
-  margin-bottom: 16px;
 }
 </style>
